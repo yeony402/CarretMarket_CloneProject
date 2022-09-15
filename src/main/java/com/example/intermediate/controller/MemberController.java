@@ -36,8 +36,8 @@ public class MemberController {
   }
 
   @RequestMapping(value = "/api/auth/member/logout", method = RequestMethod.POST)
-  public ResponseDto<?> logout(HttpServletRequest request) {
-    return memberService.logout(request);
+  public ResponseDto<?> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return memberService.logout(userDetails);
   }
 
   // oauth2 카카오 로그인
