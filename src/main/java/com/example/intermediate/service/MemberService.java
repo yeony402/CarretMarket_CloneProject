@@ -66,17 +66,12 @@ public class MemberService {
     }
 
 
-        public ResponseDto<?> logout(HttpServletRequest reqeust){
-            if (!tokenProvider.validateToken(reqeust.getHeader("RefreshToken"))) {
-                return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
-            }
-            Member member = tokenProvider.getMemberFromAuthentication();
-            if (null == member) {
+        public ResponseDto<?> logout(UserDetailsImpl userDetails){
+            if (null == userDetails.getMember()) {
                 return ResponseDto.fail("MEMBER_NOT_FOUND",
                         "사용자를 찾을 수 없습니다.");
             }
-
-            return tokenProvider.deleteRefreshToken(member);
+            return tokenProvider.deleteRefreshToken(userDetails.getMember());
         }
 
     @Transactional(readOnly = true)
